@@ -135,6 +135,7 @@ const PostsPage = () => {
                         </div>
                       ))}
                   </div>
+                  
                 </div>
 
                 <button className="btn btn-primary mt-1" style={{ fontSize: '10px' }} onClick={() => navigation(`/post/${post.id}`)}>
