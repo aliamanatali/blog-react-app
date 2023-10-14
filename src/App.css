@@ -8,9 +8,10 @@
 }
 .mainDiv{
   text-align: right;
+  margin-bottom: 20px;
 }
 .mainDiv button{
-  margin-right: 50px;
+  margin-right: 2px;
 }
 .mainDiv h1 {
   font-size: 3rem;
@@ -18,11 +19,10 @@
 }
 .grid{
   display: grid;
-  grid-template-columns: repeat(1, 1fr);
+  grid-template-columns: repeat(3, 1fr);
   grid-gap: 20px;
-  padding: 20px;
-  margin-left: 150px;
-  margin-right: 150px;
+  margin-left: 100px;
+  margin-right: 100px;
 }
 .card{
   padding: 20px;

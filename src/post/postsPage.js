@@ -4,7 +4,7 @@ import axios from 'axios';
 import { v4 as uuidv4 } from 'uuid';
 
 const PostsPage = () => {
-  const [myData, setMyData] = useState([]);
+  // const [myData, setMyData] = useState([]);
   const [comment, setComment] = useState([]);
   const [allPosts, setAllPosts] = useState([]);
   const navigation = useNavigate();
@@ -48,7 +48,7 @@ const PostsPage = () => {
     if (post && comment) {
       const updatedPosts = allPosts.map((p) => {
         if (p.id === post.id) {
-          const newCom = { userId: post.userId, id: newId, comment: comment };
+          const newCom = { userId: params.userId, id: newId, comment: comment };
           return { ...p, comments: [...p.comments, newCom] };
         }
         return p;
@@ -59,7 +59,12 @@ const PostsPage = () => {
       setComment('');
     }
   };
-
+useEffect(()=>{
+  let entries = localStorage.getItem('entries')
+  if (!entries || !entries.length) {
+    navigation('/')
+  }
+},[])
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -98,7 +103,10 @@ const PostsPage = () => {
   const funmove = () => {
     navigation(`/createPost/${params.userId}`);
   };
-
+  const logout = () => {
+    navigation(`/`);
+  };
+console.log(allPosts, "allposts")
   return (
     <>
       <div className="mainDiv">
@@ -106,6 +114,7 @@ const PostsPage = () => {
         <button className="btn btn-secondary" title="crPost" id="createPost" onClick={funmove}>
           Create Post
         </button>
+        <button className='btn btn-dark' style={{marginRight:'40px'}} title='logOut' id="logout" onClick={logout}>LogOut</button>
       </div>
 
       <div className="grid">
@@ -116,20 +125,39 @@ const PostsPage = () => {
 
             return (
               <div key={userId} className="card">
-                <h3>{title.slice(0, 18).toUpperCase()}</h3>
+                {isCurrentUserPost && (
+                  <div className="mt-1" style={{ textAlign: 'right' }}>
+                    <button className="btn btn-secondary" style={{ fontSize: '8px' }} onClick={() => handleEdit(post)}>
+                      Edit
+                    </button>
+                    <button className="btn btn-danger" style={{ fontSize: '8px', marginLeft: '1px' }} onClick={() => handleDelete(post.id)}>
+                      Delete
+                    </button>
+                  </div>
+                )}
+                <h4 style={{textAlign:'left'}}>{title.slice(0, 18)}</h4>
                 <p style={{ textAlign: 'justify' }}>{body.slice(0, 200)}</p>
-
+                  <div style={{textAlign: 'right'}}>
+                <button className="btn btn-light mt-1" style={{ fontSize: '10px'}} onClick={() => navigation(`/post/${post.id}`)}>
+                  Read More
+                </button>
+                </div>
                 <div>
-                  <h4>Comments:</h4>
-                  <div key={post.id}>
-                    {post.comments &&
-                      post.comments.map((comm) => (
+                <h5>Comments:</h5>
+                  <div key={post?.id}  style={{border:'1px solid grey',borderRadius:'8px', padding:'5px', marginBottom:'0rem'}}>
+                    {post?.comments &&
+                      post?.comments?.map((comm) => (
                         <div key={`${post.id}-${comm.id}`}>
-                          <p>{comm.comment}</p>
-                          {post.userId === params.userId && (
-                            <div>
-                              <button onClick={() => handleEditComment(post, comm.id)}>Edit</button>
-                              <button onClick={() => handleDeleteComment(post, comm.id)}>Delete</button>
+                          {console.log(comm.comment)}
+                          {comm.comment && 
+                          
+                          <p  style={{border:'1px solid grey',borderRadius:'8px', marginBottom:'0rem', textAlign:'left', paddingLeft:'5px'}}>{comm.comment}</p>
+                          
+                          }
+                          {comm?.userId === params?.userId && (
+                            <div style={{textAlign:'right', marginBottom:'2px'}}>
+                              <button className='btn btn-secondary' style={{ fontSize: '5px' }} onClick={() => handleEditComment(post, comm.id)}>Edit</button>
+                              <button className='btn btn-danger' style={{ fontSize: '5px', marginLeft: '1px' }} onClick={() => handleDeleteComment(post, comm.id)}>Delete</button>
                             </div>
                           )}
                         </div>
@@ -138,19 +166,8 @@ const PostsPage = () => {
                   
                 </div>
 
-                <button className="btn btn-primary mt-1" style={{ fontSize: '10px' }} onClick={() => navigation(`/post/${post.id}`)}>
-                  Read More
-                </button>
-                {isCurrentUserPost && (
-                  <div className="mt-1" style={{ textAlign: 'right' }}>
-                    <button className="btn btn-secondary" style={{ fontSize: '10px' }} onClick={() => handleEdit(post)}>
-                      Edit
-                    </button>
-                    <button className="btn btn-danger" style={{ fontSize: '10px' }} onClick={() => handleDelete(post.id)}>
-                      Delete
-                    </button>
-                  </div>
-                )}
+               
+
 
                 <form onSubmit={(e) => handleComment(e, post)}>
                   <div className="form-group" style={{ textAlign: 'right' }}>
@@ -161,13 +178,13 @@ const PostsPage = () => {
                       id="comment"
                       placeholder="Add a comment"
                       value={comment}
-                      onChange={(e) => setComment(e.target.value)}
-                    />
+                      onChange={(e) => setComment(e.target.value)}/>
                     <button className="btn btn-primary mt-1" style={{ marginLeft: '2px', fontSize: '10px' }} type="submit">
                       Add Comment
                     </button>
                   </div>
                 </form>
+                
               </div>
             );
           })}

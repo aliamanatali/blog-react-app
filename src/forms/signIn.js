@@ -48,8 +48,8 @@ export const SignIn = () => {
     }
 
   return (
-    <div className="d-flex align-items-center justify-content-center" style={{ height: '100vh' }}>
-      <div>
+    <div className="d-flex align-items-center justify-content-center" style={{ height: '100vh'}}>
+      <div style={{ border:'2px solid white', padding: '33px', borderRadius:'10px', boxShadow:'4px 4px 10px 3px grey' }}>
         <h2 className="text-center">Sign In</h2>
         <div className='d-flex justify-content-end'>
           <Link to="/signup" className="btn btn-link">Sign Up</Link>

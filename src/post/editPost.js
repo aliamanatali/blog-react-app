@@ -13,7 +13,7 @@ const EditPost = () => {
 
   const handleTitleChange = (e) => {
     setTitle(e.target.value);
-  };
+  }; 
 
   const handleBodyChange = (e) => {
     setBody(e.target.value);
@@ -23,7 +23,9 @@ const EditPost = () => {
     e.preventDefault();
     const userId = foundPost.userId;
     const id = foundPost.id;
-    const updatedPost = { userId, title, body, id };
+    const comments=foundPost.comments;
+    console.log(comments);
+    const updatedPost = { userId, title, body, id, comments};
     const updatedPosts = allPosts.map((post) => {
       if (post.userId === userId && post.id === params.id) {
         return updatedPost;

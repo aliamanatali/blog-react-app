@@ -17,12 +17,12 @@ export const SignUp = () => {
         e.preventDefault();
       
         if (name && email && password) {
-          
-          setUserId( uuidv4());
-          console.log('Yeh Id ha:' + userId);
-          const newEntry = { id: userId, name: name, email: email, password: password };
+          const newUserId = uuidv4();
+          setUserId(newUserId);
+          console.log('Yeh Id ha:' + newUserId);
+          const newEntry = { id: newUserId, name: name, email: email, password: password };
           let allEntries = JSON.parse(localStorage.getItem('entries')) || [];
-      
+
           if (allEntries.length > 0) {
             for (let i = 0; i < allEntries.length; i++) {
               if (allEntries[i].email === email) {
@@ -39,7 +39,7 @@ export const SignUp = () => {
           console.log(allEntries);
           // setUserId(newId);
           alert('You have signed up successfully');
-          navigation(`/feed/${newEntry.userId}`);
+          navigation(`/feed/${newUserId}`);
           setName('');
           setEmail('');
           setPassword('');
@@ -54,7 +54,7 @@ export const SignUp = () => {
   return (
     <div className="d-flex align-items-center justify-content-center" style={{ height: '100vh' }}>
       {/* <Link to={`/createPost?userId=${newId}`}>Create Post</Link> */}
-      <div>
+      <div  style={{ border:'2px solid white', padding: '33px', borderRadius:'10px', boxShadow:'4px 4px 10px 3px grey' }}>
         <h2>Sign Up</h2>
         <div className='d-flex justify-content-end'>
           <Link to="/" className="btn btn-link">Sign In</Link>
